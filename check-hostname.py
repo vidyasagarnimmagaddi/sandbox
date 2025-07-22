@@ -103,7 +103,7 @@ def main():
     if fqdn != hostname:
         fqdn_passed = run_checks_for_target("FQDN", fqdn)
         if not fqdn_passed:
-            print("\n⚠️ Warning: FQDN checks failed.")
+            print("\n[Warning]: FQDN checks failed.")
             # Do NOT set all_passed = False
     else:
         print(f"FQDN is the same as hostname: {fqdn}")
