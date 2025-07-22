@@ -18,7 +18,7 @@ jobs:
       - name: Run check-hostname.py
         run: python check-hostname.py
 
-      - name: Run hostname check script
+      - name: Run hostname check script-old
         run: |
           echo "Hostname: $env:COMPUTERNAME"
           echo "Fully Qualified Domain Name: $([System.Net.Dns]::GetHostEntry([System.Net.Dns]::GetHostName()).HostName)"
@@ -31,16 +31,16 @@ jobs:
         shell: pwsh
         if: runner.os == 'Windows' && always()
 
-      - name: Run hostname check script
+      - name: Run hostname check script (PowerShell)
         run: |
-          set -x
-          echo "Hostname: $(hostname)"
-          echo "Fully Qualified Domain Name: $(hostname -f)"
+          echo "Hostname: $env:COMPUTERNAME"
+          $fqdn = [System.Net.Dns]::GetHostEntry([System.Net.Dns]::GetHostName()).HostName
+          echo "Fully Qualified Domain Name: $fqdn"
           echo "Pinging localhost..."
           ping -n 1 localhost
           echo "Pinging hostname..."
-          ping -n 1 $(hostname)
+          ping -n 1 $env:COMPUTERNAME
           echo "Pinging FQDN..."
-          ping -n 1 $(hostname -f)
-        shell: bash
+          ping -n 1 $fqdn
+        shell: pwsh
         if: runner.os == 'Windows' && always()
